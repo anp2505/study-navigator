@@ -1,3 +1,4 @@
+import { useToast } from "@/hooks/use-toast";
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
@@ -33,6 +34,7 @@ const skills = [{
 export const AssessmentTest = ({
   onComplete
 }: AssessmentTestProps) => {
+  const { toast } = useToast(); // Khai báo toast
   const [career, setCareer] = useState("");
   const [skillLevels, setSkillLevels] = useState<Record<string, number>>({
     programming: 50,
@@ -52,6 +54,14 @@ export const AssessmentTest = ({
     logic: 73
   };
   const handleSubmit = () => {
+    if (!career || career.trim() === "") {
+      toast({
+        variant: "destructive",
+        title: "Thông báo",
+        description: "Bạn cần chọn nghề nghiệp mục tiêu trước khi xem kết quả!",
+      });
+      return;
+    }
     setShowResults(true);
   };
   const chartData = skills.map(skill => ({
@@ -85,11 +95,11 @@ export const AssessmentTest = ({
 
               {/* Career selection */}
               <div className="space-y-3">
-                <Label htmlFor="career" className="text-base font-semibold">
+                <Label htmlFor="career" className="text-xl font-semibold">
                   Nghề nghiệp mục tiêu
                 </Label>
                 <Select value={career} onValueChange={setCareer}>
-                  <SelectTrigger id="career" className="w-full">
+                  <SelectTrigger id="career" className={`w-full ${!career ? "border-destructive/50" : ""}`}>
                     <SelectValue placeholder="Chọn nghề bạn muốn theo đuổi" />
                   </SelectTrigger>
                   <SelectContent>
@@ -116,10 +126,15 @@ export const AssessmentTest = ({
                 })} max={100} step={1} className="w-full" />
                     </div>)}
 
-                  <Button onClick={handleSubmit} disabled={!career} size="lg" className="w-full mt-6">
+                  <Button onClick={handleSubmit} size="lg" className="w-full mt-6 shadow-lg transition-all active:scale-95">
                     Xem kết quả đánh giá
                     <ArrowRight className="ml-2 h-5 w-5" />
                   </Button>
+                  {!career && (
+                    <p className="text-destructive text-sm text-center font-medium animate-pulse">
+                      * Vui lòng chọn nghề nghiệp mục tiêu phía trên
+                    </p>
+                )}
                 </div> : <div className="space-y-6">
                   {/* Radar chart */}
                   <div className="bg-secondary/30 rounded-2xl p-6">

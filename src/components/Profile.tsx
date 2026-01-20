@@ -1,19 +1,29 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { User, Mail, Lock, Bell, Settings } from "lucide-react";
+import { User, Mail, Lock, Bell, Settings, BarChart3 } from "lucide-react";
 import { Switch } from "@/components/ui/switch";
 
 export const Profile = () => {
+  const navigate = useNavigate();
   const [notifications, setNotifications] = useState({
     email: true,
     push: false,
     weekly: true
   });
+
+  const onReassess = () => {
+    // Chuyển hướng sang trang assessment
+    navigate("/assessment");
+    
+    // Tùy chọn: Cuộn lên đầu trang để người dùng bắt đầu bài test thoải mái
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
   return (
     <div className="space-y-6 max-w-4xl mx-auto">
@@ -37,10 +47,14 @@ export const Profile = () => {
       {/* Settings Tabs */}
       <Card className="p-6 shadow-elegant">
         <Tabs defaultValue="account" className="w-full">
-          <TabsList className="grid w-full grid-cols-3">
+          <TabsList className="grid w-full grid-cols-4">
             <TabsTrigger value="account">
               <User className="h-4 w-4 mr-2" />
               Tài khoản
+            </TabsTrigger>
+            <TabsTrigger value="assessment">
+              <Lock className="h-4 w-4 mr-2" />
+              Kỹ năng
             </TabsTrigger>
             <TabsTrigger value="security">
               <Lock className="h-4 w-4 mr-2" />
@@ -71,6 +85,27 @@ export const Profile = () => {
               <Input id="career" defaultValue="Fullstack Developer" />
             </div>
             <Button className="w-full">Lưu thay đổi</Button>
+          </TabsContent>
+
+          {/* Assessment Tab - PHẦN THÊM MỚI */}
+          <TabsContent value="assessment" className="space-y-6 mt-6">
+            <div className="text-center space-y-4 py-4">
+              <div className="bg-primary/10 w-16 h-16 rounded-full flex items-center justify-center mx-auto">
+                <BarChart3 className="h-8 w-8 text-primary" />
+              </div>
+              <div className="space-y-2">
+                <h3 className="text-xl font-bold">Điều chỉnh kỹ năng</h3>
+                <p className="text-muted-foreground max-w-sm mx-auto">
+                  Bạn cảm thấy năng lực của mình đã thay đổi? Hãy cập nhật lại để Study Navigator tối ưu hóa lộ trình.
+                </p>
+              </div>
+              <Button 
+                onClick={onReassess} 
+                className="bg-accent hover:bg-accent/90 text-accent-foreground font-bold px-8"
+              >
+                Bắt đầu đánh giá lại
+              </Button>
+            </div>
           </TabsContent>
 
           {/* Security Tab */}
