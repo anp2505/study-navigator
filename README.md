@@ -35,7 +35,7 @@
 ### 1. Tải dự án về máy
 
 ```bash
-git clone https://github.com/your-username/study-navigator.git
+git clone https://github.com/anp2505/study-navigator.git
 
 cd study-navigator
 ```
