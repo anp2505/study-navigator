@@ -1,6 +1,3 @@
-<<<<<<< HEAD
-# study-navigator
-=======
 # Study Navigator - Nền tảng Học tập & Định hướng IT Cá nhân hóa
 
 **Study Navigator** là nền tảng giúp sinh viên Công nghệ Thông tin thoát khỏi *“ma trận định hướng”*, xây dựng **lộ trình học tập thực chiến** và **kết nối với cộng đồng chuyên môn**. 
