@@ -143,6 +143,9 @@ export const Overview = () => {
               <p className="font-semibold text-muted-foreground">
                 Kỹ năng của bạn đang thấp hơn {gap} điểm so với chuẩn thị trường
               </p>
+              <p className="text-sm text-muted-foreground mt-2 leading-relaxed italic">
+                Mức thị trường được tính dựa trên dữ liệu thu thập từ các nền tảng tuyển dụng như LinkedIn, ITViec và báo cáo thị trường việc làm IT năm 2026.
+              </p>
               <p className="text-sm text-muted-foreground mt-1">
                 Tiếp tục học tập để lấp đầy các khoảng trống kỹ năng nhé!
               </p>
