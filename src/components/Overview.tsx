@@ -19,16 +19,15 @@ import {
 } from "recharts";
 import { TrendingUp, BookOpen, Target, Award } from "lucide-react";
 
-// 1. Định nghĩa kiểu dữ liệu rõ ràng thay vì any
 interface SkillItem {
   skill: string;
   you: number;
   market: number;
-  [key: string]: any; // Cho phép các key lạ khác
+  [key: string]: any; 
 }
 
 interface DashboardProps {
-  skillData?: any[]; // Input đầu vào có thể lộn xộn
+  skillData?: any[]; 
 }
 
 const mockSkillData: SkillItem[] = [
