@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, ResponsiveContainer, Legend } from "recharts";
 import { TrendingUp, BookOpen, Target, Award } from "lucide-react";
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip } from "recharts";
 
 const mockSkillData = [
   { skill: "Lập trình", you: 60, market: 75 },
@@ -87,23 +88,55 @@ export const Overview = () => {
         </Card>
       </div>
 
-      {/* Radar Chart */}
+
+      {/* Charts Section*/}
       <Card className="p-6 shadow-elegant">
-        <h2 className="text-2xl font-bold mb-6">Biểu đồ kỹ năng</h2>
-        <div className="bg-secondary/30 rounded-2xl p-6">
-          <ResponsiveContainer width="100%" height={400}>
-            <RadarChart data={mockSkillData.map(d => ({ skill: d.skill, "Bạn": d.you, "Thị trường": d.market }))}>
-              <PolarGrid stroke="hsl(var(--border))" />
-              <PolarAngleAxis dataKey="skill" tick={{ fill: "hsl(var(--foreground))", fontSize: 12 }} />
-              <PolarRadiusAxis angle={90} domain={[0, 100]} />
-              <Radar name="Bạn" dataKey="Bạn" stroke="hsl(var(--primary))" fill="hsl(var(--primary))" fillOpacity={0.5} />
-              <Radar name="Thị trường" dataKey="Thị trường" stroke="hsl(var(--accent))" fill="hsl(var(--accent))" fillOpacity={0.5} />
-              <Legend />
-            </RadarChart>
-          </ResponsiveContainer>
+        <h2 className="text-2xl font-bold mb-6">Phân tích kỹ năng chi tiết</h2>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          
+          {/* Cột 1: Radar Chart*/}
+          <div className="space-y-4">
+            <h3 className="text-center font-medium text-muted-foreground">Tổng quan năng lực</h3>
+            <div className="bg-secondary/30 rounded-2xl p-2">
+              <ResponsiveContainer width="100%" height={350}>
+                <RadarChart data={mockSkillData.map(d => ({ skill: d.skill, "Bạn": d.you, "Thị trường": d.market }))}>
+                  <PolarGrid stroke="hsl(var(--border))" />
+                  <PolarAngleAxis dataKey="skill" tick={{ fill: "hsl(var(--foreground))", fontSize: 11 }} />
+                  <PolarRadiusAxis angle={90} domain={[0, 100]} />
+                  <Radar name="Bạn" dataKey="Bạn" stroke="hsl(var(--primary))" fill="hsl(var(--primary))" fillOpacity={0.5} />
+                  <Radar name="Thị trường" dataKey="Thị trường" stroke="hsl(var(--accent))" fill="hsl(var(--accent))" fillOpacity={0.5} />
+                  <Legend />
+                </RadarChart>
+              </ResponsiveContainer>
+            </div>
+          </div>
+
+          {/* Cột 2: Bar Chart*/}
+          <div className="space-y-4">
+            <h3 className="text-center font-medium text-muted-foreground">So sánh trực quan</h3>
+            <div className="bg-secondary/30 rounded-2xl p-2">
+              <ResponsiveContainer width="100%" height={350}>
+                <BarChart 
+                  data={mockSkillData.map(d => ({ skill: d.skill, "Bạn": d.you, "Thị trường": d.market }))}
+                  margin={{ top: 10, right: 10, left: -20, bottom: 0 }}
+                >
+                  <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="hsl(var(--border))" />
+                  <XAxis dataKey="skill" tick={{ fontSize: 10 }} />
+                  <YAxis domain={[0, 100]} tick={{ fontSize: 10 }} />
+                  <Tooltip 
+                    contentStyle={{ backgroundColor: "hsl(var(--background))", borderRadius: "8px", border: "1px solid hsl(var(--border))" }}
+                  />
+                  <Legend />
+                  <Bar dataKey="Bạn" fill="hsl(var(--primary))" radius={[4, 4, 0, 0]} />
+                  <Bar dataKey="Thị trường" fill="hsl(var(--accent))" radius={[4, 4, 0, 0]} />
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
+          </div>
         </div>
 
-        <Card className="bg-accent/10 border-accent p-4 mt-6">
+        {/* Thông báo */}
+        <Card className="bg-accent/10 border-accent p-4 mt-8">
           <div className="flex items-start gap-4">
             <TrendingUp className="h-6 w-6 text-accent flex-shrink-0" />
             <div>
@@ -111,7 +144,7 @@ export const Overview = () => {
                 Kỹ năng của bạn đang thấp hơn {gap} điểm so với chuẩn thị trường
               </p>
               <p className="text-sm text-muted-foreground mt-1">
-                Tiếp tục học tập để đạt được mục tiêu của bạn!
+                Tiếp tục học tập để lấp đầy các khoảng trống kỹ năng nhé!
               </p>
             </div>
           </div>
