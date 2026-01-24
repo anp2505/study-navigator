@@ -68,7 +68,11 @@ const communities = [
   }
 ];
 
-export const Dashboard = () => {
+interface DashboardProps {
+  skillData?: any; 
+}
+
+export const Dashboard = ({ skillData }: DashboardProps) => {
   const [activeTab, setActiveTab] = useState("overview");
   const [chatMessages, setChatMessages] = useState([
     { role: "assistant", content: "Chào bạn, tôi là trợ lý AI. Bạn cần giúp gì về lộ trình học không?" }
@@ -217,7 +221,7 @@ export const Dashboard = () => {
       {/* Main content */}
       <div className="max-w-7xl mx-auto p-4 md:p-6">
         {/* Overview */}
-        {activeTab === "overview" && <Overview />}
+        {activeTab === "overview" && <Overview skillData={skillData} />}
 
         {/* Profile */}
         {activeTab === "profile" && <Profile />}
