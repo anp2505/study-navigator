@@ -8,7 +8,7 @@ import { Slider } from "@/components/ui/slider";
 import { Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, ResponsiveContainer, Legend } from "recharts";
 import { ArrowRight, TrendingUp } from "lucide-react";
 interface AssessmentTestProps {
-  onComplete: () => void;
+  onComplete: (results: any) => void;
 }
 const itCareers = ["Frontend Developer", "Backend Developer", "Fullstack Developer", "AI/Data Engineer", "Cyber Security", "DevOps Engineer", "Tester/QA"];
 const skills = [{
@@ -157,7 +157,7 @@ export const AssessmentTest = ({
                   </Card>
 
                   {/* CTA */}
-                  <Button onClick={onComplete} size="lg" className="w-full bg-accent hover:bg-accent/90 text-accent-foreground shadow-glow">
+                  <Button onClick={() => onComplete(chartData)} size="lg" className="w-full bg-accent hover:bg-accent/90 text-accent-foreground shadow-glow">
                     Đăng ký lộ trình ngay
                     <ArrowRight className="ml-2 h-5 w-5" />
                   </Button>

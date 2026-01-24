@@ -7,16 +7,21 @@ type AppState = "flashcards" | "assessment" | "dashboard";
 
 const Index = () => {
   const [appState, setAppState] = useState<AppState>("flashcards");
-
+  const [assessmentResults, setAssessmentResults] = useState(null);
   return (
     <>
       {appState === "flashcards" && (
         <FlashcardFlow onComplete={() => setAppState("assessment")} />
       )}
       {appState === "assessment" && (
-        <AssessmentTest onComplete={() => setAppState("dashboard")} />
+        <AssessmentTest onComplete={(results) => {
+          setAssessmentResults(results); 
+          setAppState("dashboard");
+        }} />
       )}
-      {appState === "dashboard" && <Dashboard />}
+      {appState === "dashboard" && (
+        <Dashboard skillData={assessmentResults} />
+      )}
     </>
   );
 };
