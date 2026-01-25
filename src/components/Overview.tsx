@@ -2,16 +2,41 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
-import { Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, ResponsiveContainer, Legend } from "recharts";
+import {
+  Radar,
+  RadarChart,
+  PolarGrid,
+  PolarAngleAxis,
+  PolarRadiusAxis,
+  ResponsiveContainer,
+  Legend,
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+} from "recharts";
 import { TrendingUp, BookOpen, Target, Award } from "lucide-react";
 
-const mockSkillData = [
+interface SkillItem {
+  skill: string;
+  you: number;
+  market: number;
+  [key: string]: any; 
+}
+
+interface DashboardProps {
+  skillData?: any[]; 
+}
+
+const mockSkillData: SkillItem[] = [
   { skill: "Lập trình", you: 60, market: 75 },
   { skill: "Giải thuật", you: 55, market: 70 },
   { skill: "Database", you: 50, market: 68 },
   { skill: "Tiếng Anh", you: 65, market: 72 },
   { skill: "Làm việc nhóm", you: 70, market: 80 },
-  { skill: "Tư duy logic", you: 58, market: 73 }
+  { skill: "Tư duy logic", you: 58, market: 73 },
 ];
 
 const suggestedCourses = [
@@ -21,7 +46,7 @@ const suggestedCourses = [
     platform: "Udemy",
     level: "Cơ bản",
     progress: 65,
-    color: "bg-green-500"
+    color: "bg-green-500",
   },
   {
     id: 2,
@@ -29,7 +54,7 @@ const suggestedCourses = [
     platform: "Coursera",
     level: "Trung cấp",
     progress: 30,
-    color: "bg-blue-500"
+    color: "bg-blue-500",
   },
   {
     id: 3,
@@ -37,13 +62,31 @@ const suggestedCourses = [
     platform: "edX",
     level: "Nâng cao",
     progress: 0,
-    color: "bg-orange-500"
-  }
+    color: "bg-orange-500",
+  },
 ];
 
-export const Overview = () => {
-  const averageScore = Math.round(mockSkillData.reduce((acc, curr) => acc + curr.you, 0) / mockSkillData.length);
-  const marketAverage = Math.round(mockSkillData.reduce((acc, curr) => acc + curr.market, 0) / mockSkillData.length);
+export const Overview = ({ skillData }: DashboardProps) => {
+  const processedData = (skillData && skillData.length > 0 ? skillData : mockSkillData).map(
+    (d: any) => ({
+      skill: d.skill || d.name || "Kỹ năng",
+      you: Number(d.you || d["Bạn"] || 0),
+      market: Number(d.market || d["Thị trường"] || 0),
+      "Bạn": Number(d.you || d["Bạn"] || 0),
+      "Thị trường": Number(d.market || d["Thị trường"] || 0),
+    })
+  );
+
+  const dataLength = processedData.length || 1;
+
+  const averageScore = Math.round(
+    processedData.reduce((acc, curr) => acc + curr.you, 0) / dataLength
+  );
+
+  const marketAverage = Math.round(
+    processedData.reduce((acc, curr) => acc + curr.market, 0) / dataLength
+  );
+
   const gap = marketAverage - averageScore;
 
   return (
@@ -57,7 +100,9 @@ export const Overview = () => {
             </div>
             <div>
               <p className="text-sm text-muted-foreground">Điểm trung bình</p>
-              <p className="text-2xl font-bold">{averageScore}/100</p>
+              <p className="text-2xl font-bold">
+                {isNaN(averageScore) ? 0 : averageScore}/100
+              </p>
             </div>
           </div>
         </Card>
@@ -69,7 +114,9 @@ export const Overview = () => {
             </div>
             <div>
               <p className="text-sm text-muted-foreground">Mục tiêu thị trường</p>
-              <p className="text-2xl font-bold">{marketAverage}/100</p>
+              <p className="text-2xl font-bold">
+                {isNaN(marketAverage) ? 0 : marketAverage}/100
+              </p>
             </div>
           </div>
         </Card>
@@ -81,37 +128,105 @@ export const Overview = () => {
             </div>
             <div>
               <p className="text-sm text-muted-foreground">Cần cải thiện</p>
-              <p className="text-2xl font-bold">{gap} điểm</p>
+              <p className="text-2xl font-bold">
+                {gap > 0 ? gap : 0} điểm
+              </p>
             </div>
           </div>
         </Card>
       </div>
 
-      {/* Radar Chart */}
+      {/* Charts Section */}
       <Card className="p-6 shadow-elegant">
-        <h2 className="text-2xl font-bold mb-6">Biểu đồ kỹ năng</h2>
-        <div className="bg-secondary/30 rounded-2xl p-6">
-          <ResponsiveContainer width="100%" height={400}>
-            <RadarChart data={mockSkillData.map(d => ({ skill: d.skill, "Bạn": d.you, "Thị trường": d.market }))}>
-              <PolarGrid stroke="hsl(var(--border))" />
-              <PolarAngleAxis dataKey="skill" tick={{ fill: "hsl(var(--foreground))", fontSize: 12 }} />
-              <PolarRadiusAxis angle={90} domain={[0, 100]} />
-              <Radar name="Bạn" dataKey="Bạn" stroke="hsl(var(--primary))" fill="hsl(var(--primary))" fillOpacity={0.5} />
-              <Radar name="Thị trường" dataKey="Thị trường" stroke="hsl(var(--accent))" fill="hsl(var(--accent))" fillOpacity={0.5} />
-              <Legend />
-            </RadarChart>
-          </ResponsiveContainer>
+        <h2 className="text-2xl font-bold mb-6">Phân tích kỹ năng chi tiết</h2>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+
+          {/* Radar Chart */}
+          <div className="space-y-4">
+            <h3 className="text-center font-medium text-muted-foreground">
+              Tổng quan năng lực
+            </h3>
+            <div className="bg-secondary/30 rounded-2xl p-2">
+              <ResponsiveContainer width="100%" height={350}>
+                <RadarChart data={processedData}>
+                  <PolarGrid stroke="hsl(var(--border))" />
+                  <PolarAngleAxis
+                    dataKey="skill"
+                    tick={{ fill: "hsl(var(--foreground))", fontSize: 11 }}
+                  />
+                  <PolarRadiusAxis angle={90} domain={[0, 100]} />
+                  <Radar
+                    name="Bạn"
+                    dataKey="Bạn"
+                    stroke="hsl(var(--primary))"
+                    fill="hsl(var(--primary))"
+                    fillOpacity={0.5}
+                  />
+                  <Radar
+                    name="Thị trường"
+                    dataKey="Thị trường"
+                    stroke="hsl(var(--accent))"
+                    fill="hsl(var(--accent))"
+                    fillOpacity={0.5}
+                  />
+                  <Legend />
+                </RadarChart>
+              </ResponsiveContainer>
+            </div>
+          </div>
+
+          {/* Bar Chart */}
+          <div className="space-y-4">
+            <h3 className="text-center font-medium text-muted-foreground">
+              So sánh trực quan
+            </h3>
+            <div className="bg-secondary/30 rounded-2xl p-2">
+              <ResponsiveContainer width="100%" height={350}>
+                <BarChart
+                  data={processedData}
+                  margin={{ top: 10, right: 10, left: -20, bottom: 0 }}
+                >
+                  <CartesianGrid
+                    strokeDasharray="3 3"
+                    vertical={false}
+                    stroke="hsl(var(--border))"
+                  />
+                  <XAxis dataKey="skill" tick={{ fontSize: 10 }} />
+                  <YAxis domain={[0, 100]} tick={{ fontSize: 10 }} />
+                  <Tooltip
+                    contentStyle={{
+                      backgroundColor: "hsl(var(--background))",
+                      borderRadius: "8px",
+                      border: "1px solid hsl(var(--border))",
+                    }}
+                  />
+                  <Legend />
+                  <Bar
+                    dataKey="Bạn"
+                    fill="hsl(var(--primary))"
+                    radius={[4, 4, 0, 0]}
+                  />
+                  <Bar
+                    dataKey="Thị trường"
+                    fill="hsl(var(--accent))"
+                    radius={[4, 4, 0, 0]}
+                  />
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
+          </div>
         </div>
 
-        <Card className="bg-accent/10 border-accent p-4 mt-6">
+        {/* Gap Alert */}
+        <Card className="bg-accent/10 border-accent p-4 mt-8">
           <div className="flex items-start gap-4">
             <TrendingUp className="h-6 w-6 text-accent flex-shrink-0" />
             <div>
               <p className="font-semibold text-muted-foreground">
-                Kỹ năng của bạn đang thấp hơn {gap} điểm so với chuẩn thị trường
+                Kỹ năng của bạn đang thấp hơn {gap > 0 ? gap : 0} điểm so với chuẩn thị trường
               </p>
-              <p className="text-sm text-muted-foreground mt-1">
-                Tiếp tục học tập để đạt được mục tiêu của bạn!
+              <p className="text-sm text-muted-foreground mt-2 leading-relaxed italic">
+                Mức thị trường được tính dựa trên dữ liệu thu thập từ các nền tảng tuyển dụng như LinkedIn, ITViec và báo cáo thị trường việc làm IT năm 2026.
               </p>
             </div>
           </div>
@@ -135,14 +250,18 @@ export const Overview = () => {
                 <div className="flex-1">
                   <div className="flex items-center gap-2 mb-2">
                     <Badge className={course.color}>{course.level}</Badge>
-                    <span className="text-sm text-muted-foreground">{course.platform}</span>
+                    <span className="text-sm text-muted-foreground">
+                      {course.platform}
+                    </span>
                   </div>
                   <h4 className="font-semibold text-lg">{course.title}</h4>
                 </div>
                 {course.progress > 0 ? (
                   <Button size="sm">Tiếp tục học</Button>
                 ) : (
-                  <Button size="sm" variant="outline">Bắt đầu</Button>
+                  <Button size="sm" variant="outline">
+                    Bắt đầu
+                  </Button>
                 )}
               </div>
               {course.progress > 0 && (
