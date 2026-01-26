@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -12,7 +11,6 @@ import { Textarea } from "@/components/ui/textarea";
 
 export const Profile = () => {
 
-  const [isEditingAvatar, setIsEditingAvatar] = useState(false);
   const [avatarPreview, setAvatarPreview] = useState("");
   
   const [profileData, setProfileData] = useState({

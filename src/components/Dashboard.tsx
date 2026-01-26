@@ -14,7 +14,6 @@ import {
   ExternalLink,
   Send,
   UserCircle,
-  ChevronDown,
   Facebook
 } from "lucide-react";
 import { Overview } from "./Overview";
