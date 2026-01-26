@@ -5,6 +5,9 @@ import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import {
+  Home,
+  Route,
+  BookOpen,
   Users,
   Bot,
   CheckCircle2,
@@ -14,11 +17,19 @@ import {
   ExternalLink,
   Send,
   UserCircle,
+  ChevronDown
 } from "lucide-react";
 import { Overview } from "./Overview";
 import { Resources } from "./Resources";
 import { Profile } from "./Profile";
-import { DashboardNavbar } from "./DashboardNavbar";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 const roadmapSteps = [
   { id: 1, title: "Cơ bản HTML/CSS", status: "completed", duration: "2 tuần" },
@@ -58,7 +69,7 @@ const communities = [
 ];
 
 interface DashboardProps {
-  skillData?: any;
+  skillData?: any; 
 }
 
 export const Dashboard = ({ skillData }: DashboardProps) => {
@@ -83,7 +94,129 @@ export const Dashboard = ({ skillData }: DashboardProps) => {
 
   return (
     <div className="min-h-screen gradient-hero">
-      <DashboardNavbar activeTab={activeTab} setActiveTab={setActiveTab} />
+      {/* Header */}
+      <div className="border-b bg-card/80 backdrop-blur-sm sticky top-0 z-10">
+        <div className="max-w-7xl mx-auto px-4 py-0">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center">
+              <img src="/logo.png" alt="Study Navigator" className="h-28 w-auto object-contain" />
+            </div>
+            
+            {/* Navigation */}
+            <nav className="hidden md:flex items-center gap-1">
+              <Button
+                variant={activeTab === "overview" ? "default" : "ghost"}
+                size="sm"
+                onClick={() => setActiveTab("overview")}
+              >
+                <Home className="h-4 w-4 mr-2" />
+                Tổng quan
+              </Button>
+              <Button
+                variant={activeTab === "roadmap" ? "default" : "ghost"}
+                size="sm"
+                onClick={() => setActiveTab("roadmap")}
+              >
+                <Route className="h-4 w-4 mr-2" />
+                Lộ trình
+              </Button>
+              <Button
+                variant={activeTab === "resources" ? "default" : "ghost"}
+                size="sm"
+                onClick={() => setActiveTab("resources")}
+              >
+                <BookOpen className="h-4 w-4 mr-2" />
+                Tài nguyên
+              </Button>
+              <Button
+                variant={activeTab === "community" ? "default" : "ghost"}
+                size="sm"
+                onClick={() => setActiveTab("community")}
+              >
+                <Users className="h-4 w-4 mr-2" />
+                Cộng đồng
+              </Button>
+              <Button
+                variant={activeTab === "ai" ? "default" : "ghost"}
+                size="sm"
+                onClick={() => setActiveTab("ai")}
+              >
+                <Bot className="h-4 w-4 mr-2" />
+                AI Mentor
+              </Button>
+            </nav>
+
+            {/* User menu */}
+            <div className="flex items-center gap-2">
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="ghost" className="flex items-center gap-2">
+                    <UserCircle className="h-5 w-5" />
+                    <span className="hidden md:inline">Học viên</span>
+                    <ChevronDown className="h-4 w-4" />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="w-56">
+                  <DropdownMenuLabel>Tài khoản của tôi</DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem onClick={() => setActiveTab("profile")}>
+                    <UserCircle className="mr-2 h-4 w-4" />
+                    Thông tin cá nhân
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem className="text-red-600">
+                    Đăng xuất
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </div>
+          </div>
+
+          {/* Mobile Navigation */}
+          <nav className="md:hidden flex gap-1 mt-4 overflow-x-auto pb-2">
+            <Button
+              variant={activeTab === "overview" ? "default" : "outline"}
+              size="sm"
+              onClick={() => setActiveTab("overview")}
+            >
+              <Home className="h-4 w-4 mr-1" />
+              Tổng quan
+            </Button>
+            <Button
+              variant={activeTab === "roadmap" ? "default" : "outline"}
+              size="sm"
+              onClick={() => setActiveTab("roadmap")}
+            >
+              <Route className="h-4 w-4 mr-1" />
+              Lộ trình
+            </Button>
+            <Button
+              variant={activeTab === "resources" ? "default" : "outline"}
+              size="sm"
+              onClick={() => setActiveTab("resources")}
+            >
+              <BookOpen className="h-4 w-4 mr-1" />
+              Tài nguyên
+            </Button>
+            <Button
+              variant={activeTab === "community" ? "default" : "outline"}
+              size="sm"
+              onClick={() => setActiveTab("community")}
+            >
+              <Users className="h-4 w-4 mr-1" />
+              Cộng đồng
+            </Button>
+            <Button
+              variant={activeTab === "ai" ? "default" : "outline"}
+              size="sm"
+              onClick={() => setActiveTab("ai")}
+            >
+              <Bot className="h-4 w-4 mr-1" />
+              AI
+            </Button>
+          </nav>
+        </div>
+      </div>
 
       {/* Main content */}
       <div className="max-w-7xl mx-auto p-4 md:p-6">
@@ -120,8 +253,9 @@ export const Dashboard = ({ skillData }: DashboardProps) => {
                     </div>
 
                     {/* Content */}
-                    <Card className={`flex-1 p-4 ${step.status === "in-progress" ? "border-primary shadow-sm" : ""
-                      }`}>
+                    <Card className={`flex-1 p-4 ${
+                      step.status === "in-progress" ? "border-primary shadow-sm" : ""
+                    }`}>
                       <div className="flex items-start justify-between gap-4">
                         <div className="space-y-1">
                           <h3 className="font-semibold text-lg">{step.title}</h3>
@@ -129,10 +263,10 @@ export const Dashboard = ({ skillData }: DashboardProps) => {
                         </div>
                         <Badge variant={
                           step.status === "completed" ? "default" :
-                            step.status === "in-progress" ? "default" : "secondary"
+                          step.status === "in-progress" ? "default" : "secondary"
                         }>
                           {step.status === "completed" ? "Hoàn thành" :
-                            step.status === "in-progress" ? "Đang học" : "Sắp tới"}
+                           step.status === "in-progress" ? "Đang học" : "Sắp tới"}
                         </Badge>
                       </div>
                       {step.status === "in-progress" && (
@@ -203,7 +337,7 @@ export const Dashboard = ({ skillData }: DashboardProps) => {
         {activeTab === "ai" && (
           <div className="space-y-6">
             <Card className="p-6 shadow-elegant max-w-4xl mx-auto">
-
+              
               {/* Header */}
               <div className="flex items-center gap-4 mb-6">
                 <div className="h-12 w-12 rounded-full bg-primary text-primary-foreground flex items-center justify-center shadow">
@@ -216,15 +350,16 @@ export const Dashboard = ({ skillData }: DashboardProps) => {
                   </p>
                 </div>
               </div>
-
+        
               {/* Chat area */}
               <ScrollArea className="h-[420px] rounded-2xl border bg-muted/20 p-4">
                 <div className="space-y-4">
                   {chatMessages.map((msg, idx) => (
                     <div
                       key={idx}
-                      className={`flex items-end gap-2 ${msg.role === "user" ? "justify-end" : "justify-start"
-                        }`}
+                      className={`flex items-end gap-2 ${
+                        msg.role === "user" ? "justify-end" : "justify-start"
+                      }`}
                     >
                       {/* AI avatar */}
                       {msg.role === "assistant" && (
@@ -232,17 +367,18 @@ export const Dashboard = ({ skillData }: DashboardProps) => {
                           AI
                         </div>
                       )}
-
+        
                       {/* Bubble */}
                       <div
-                        className={`max-w-[75%] rounded-2xl px-4 py-2 text-sm shadow-sm ${msg.role === "user"
-                          ? "bg-primary text-primary-foreground"
-                          : "bg-card"
-                          }`}
+                        className={`max-w-[75%] rounded-2xl px-4 py-2 text-sm shadow-sm ${
+                          msg.role === "user"
+                            ? "bg-primary text-primary-foreground"
+                            : "bg-card"
+                        }`}
                       >
                         {msg.content}
                       </div>
-
+        
                       {/* User avatar */}
                       {msg.role === "user" && (
                         <div className="h-8 w-8 rounded-full bg-primary text-primary-foreground flex items-center justify-center">
@@ -251,7 +387,7 @@ export const Dashboard = ({ skillData }: DashboardProps) => {
                       )}
                     </div>
                   ))}
-
+        
                   {/* Fake typing indicator */}
                   <div className="flex items-center gap-2 text-xs text-muted-foreground">
                     <div className="h-2 w-2 bg-muted-foreground rounded-full animate-bounce" />
@@ -261,7 +397,7 @@ export const Dashboard = ({ skillData }: DashboardProps) => {
                   </div>
                 </div>
               </ScrollArea>
-
+        
               {/* Input */}
               <div className="mt-4 flex items-center gap-2">
                 <Input
@@ -278,7 +414,7 @@ export const Dashboard = ({ skillData }: DashboardProps) => {
                   <Send className="h-4 w-4" />
                 </Button>
               </div>
-
+        
               {/* Hint */}
               <p className="text-xs text-muted-foreground mt-4 text-center">
                 * AI Mentor đang ở chế độ demo. API sẽ được tích hợp sau.
