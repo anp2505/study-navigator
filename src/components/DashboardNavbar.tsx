@@ -50,7 +50,7 @@ export const DashboardNavbar = ({ activeTab, setActiveTab }: DashboardNavbarProp
                 <div className="flex items-center justify-between h-16">
                     {/* Logo Section */}
                     <div className="flex-shrink-0 flex items-center cursor-pointer" onClick={() => setActiveTab("overview")}>
-                        <img src="/logo.png" alt="Study Navigator" className="h-10 w-auto object-contain transition-transform hover:scale-105" />
+                        <img src="/logo.png" alt="Study Navigator" className="h-20 w-auto object-contain transition-transform hover:scale-105" />
 
                     </div>
 
