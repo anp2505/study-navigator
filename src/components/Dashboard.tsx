@@ -337,45 +337,87 @@ export const Dashboard = ({ skillData }: DashboardProps) => {
         {activeTab === "ai" && (
           <div className="space-y-6">
             <Card className="p-6 shadow-elegant max-w-4xl mx-auto">
-              <div className="flex items-center gap-3 mb-6">
-                <Bot className="h-8 w-8 text-primary" />
+              
+              {/* Header */}
+              <div className="flex items-center gap-4 mb-6">
+                <div className="h-12 w-12 rounded-full bg-primary text-primary-foreground flex items-center justify-center shadow">
+                  <Bot className="h-6 w-6" />
+                </div>
                 <div>
                   <h2 className="text-2xl font-bold">AI Mentor</h2>
-                  <p className="text-sm text-muted-foreground">Trợ lý AI hỗ trợ học tập</p>
+                  <p className="text-sm text-muted-foreground">
+                    Trợ lý định hướng & hỗ trợ học tập
+                  </p>
                 </div>
               </div>
-
-              <ScrollArea className="h-[400px] border rounded-lg p-4 mb-4 bg-muted/20">
+        
+              {/* Chat area */}
+              <ScrollArea className="h-[420px] rounded-2xl border bg-muted/20 p-4">
                 <div className="space-y-4">
                   {chatMessages.map((msg, idx) => (
                     <div
                       key={idx}
-                      className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}
+                      className={`flex items-end gap-2 ${
+                        msg.role === "user" ? "justify-end" : "justify-start"
+                      }`}
                     >
-                      <Card className={`max-w-[80%] p-3 ${
-                        msg.role === "user" ? "bg-primary text-primary-foreground" : "bg-card"
-                      }`}>
+                      {/* AI avatar */}
+                      {msg.role === "assistant" && (
+                        <div className="h-8 w-8 rounded-full bg-primary/10 text-primary flex items-center justify-center text-xs font-semibold">
+                          AI
+                        </div>
+                      )}
+        
+                      {/* Bubble */}
+                      <div
+                        className={`max-w-[75%] rounded-2xl px-4 py-2 text-sm shadow-sm ${
+                          msg.role === "user"
+                            ? "bg-primary text-primary-foreground"
+                            : "bg-card"
+                        }`}
+                      >
                         {msg.content}
-                      </Card>
+                      </div>
+        
+                      {/* User avatar */}
+                      {msg.role === "user" && (
+                        <div className="h-8 w-8 rounded-full bg-primary text-primary-foreground flex items-center justify-center">
+                          <UserCircle className="h-5 w-5" />
+                        </div>
+                      )}
                     </div>
                   ))}
+        
+                  {/* Fake typing indicator */}
+                  <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                    <div className="h-2 w-2 bg-muted-foreground rounded-full animate-bounce" />
+                    <div className="h-2 w-2 bg-muted-foreground rounded-full animate-bounce delay-100" />
+                    <div className="h-2 w-2 bg-muted-foreground rounded-full animate-bounce delay-200" />
+                    <span className="ml-1">AI đang suy nghĩ...</span>
+                  </div>
                 </div>
               </ScrollArea>
-
-              <div className="flex gap-2">
+        
+              {/* Input */}
+              <div className="mt-4 flex items-center gap-2">
                 <Input
-                  placeholder="Hỏi AI về lộ trình học..."
+                  className="rounded-full"
+                  placeholder="Hỏi AI về lộ trình học, kỹ năng, tài nguyên..."
                   value={inputMessage}
                   onChange={(e) => setInputMessage(e.target.value)}
-                  onKeyPress={(e) => e.key === "Enter" && handleSendMessage()}
+                  onKeyDown={(e) => e.key === "Enter" && handleSendMessage()}
                 />
-                <Button onClick={handleSendMessage}>
+                <Button
+                  className="rounded-full px-4"
+                  onClick={handleSendMessage}
+                >
                   <Send className="h-4 w-4" />
                 </Button>
               </div>
-
+        
+              {/* Hint */}
               <p className="text-xs text-muted-foreground mt-4 text-center">
-                * Giao diện AI sẵn sàng. API sẽ được tích hợp sau.
+                * AI Mentor đang ở chế độ demo. API sẽ được tích hợp sau.
               </p>
             </Card>
           </div>
