@@ -17,7 +17,8 @@ import {
   ExternalLink,
   Send,
   UserCircle,
-  ChevronDown
+  ChevronDown,
+  Facebook
 } from "lucide-react";
 import { Overview } from "./Overview";
 import { Resources } from "./Resources";
@@ -65,6 +66,27 @@ const communities = [
     description: "Cộng đồng AI, Data Science và ML",
     discord: "https://discord.gg/ai-ml-vn",
     email: "admin@aiml.vn"
+  },
+  {
+    id: 4,
+    name: "AI Việt Nam",
+    members: 410000,
+    description: "Cộng đồng học thuật và ứng dụng trí tuệ nhân tạo.",
+    facebook: "https://www.facebook.com/aivietnam.edu.vn"
+  },
+  {
+    id: 5,
+    name: "IT for beginner",
+    members: 254000,
+    description: "Nơi chia sẻ kiến thức lập trình cơ bản cho người mới.",
+    facebook: "https://www.facebook.com/groups/itforbeginners/"
+  },
+  {
+    id: 6,
+    name: "Sinh viên IT",
+    members: 360000,
+    description: "Cộng đồng kết nối và hỗ trợ sinh viên ngành công nghệ thông tin.",
+    facebook: "https://www.facebook.com/sinhvienITVietNam"
   }
 ];
 
@@ -294,7 +316,19 @@ export const Dashboard = ({ skillData }: DashboardProps) => {
                       </p>
                       <Badge variant="secondary">{community.members} thành viên</Badge>
                     </div>
-
+                    {community.facebook && (
+                      <Button variant="outline" className="w-full justify-start" asChild>
+                        <a
+                          href={community.facebook}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          <Facebook className="h-4 w-4 mr-2" />
+                          Tham gia qua Facebook
+                          <ExternalLink className="h-3 w-3 ml-auto" />
+                        </a>
+                      </Button>
+                    )}
                     <div className="space-y-2 pt-2">
                       {community.messenger && (
                         <Button variant="outline" className="w-full justify-start" asChild>
