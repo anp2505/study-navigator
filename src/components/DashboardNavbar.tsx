@@ -51,9 +51,7 @@ export const DashboardNavbar = ({ activeTab, setActiveTab }: DashboardNavbarProp
                     {/* Logo Section */}
                     <div className="flex-shrink-0 flex items-center cursor-pointer" onClick={() => setActiveTab("overview")}>
                         <img src="/logo.png" alt="Study Navigator" className="h-10 w-auto object-contain transition-transform hover:scale-105" />
-                        <span className="ml-3 text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-blue-600 hidden sm:block">
-                            Study Navigator
-                        </span>
+
                     </div>
 
                     {/* Desktop Navigation */}
